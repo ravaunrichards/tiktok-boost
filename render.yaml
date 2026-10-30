@@ -1,11 +1,11 @@
 services:
   - type: web
     name: tikboost-app
-    runtime: node
-    plan: starter
-    buildCommand: corepack enable && pnpm install && pnpm build
-    preDeployCommand: pnpm db:migrate
-    startCommand: pnpm --filter @tikboost/api start
+    runtime: docker
+    plan: free
+    region: virginia
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
@@ -14,12 +14,17 @@ services:
         value: "10000"
       - key: WEB_ORIGIN
         value: https://tikboost-app.onrender.com
+      - key: PGSSL
+        value: "true"
+      - key: PAYPAL_MODE
+        value: sandbox
       - key: DATABASE_URL
-        fromDatabase:
-          name: tikboost-db
-          property: connectionString
-databases:
-  - name: tikboost-db
-    plan: basic-256mb
-    databaseName: tikboost
-    user: tikboost
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      - key: ADMIN_API_KEY
+        sync: false
