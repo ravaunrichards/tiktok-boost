@@ -18,3 +18,5 @@
 .payment-status{margin-top:12px;padding:11px;border:1px solid #5ce7dd35;border-radius:9px;color:#d8f7f4;background:#5ce7dd0b;font-size:11px;line-height:1.6;overflow-wrap:anywhere}
 .paypal-button-box{margin-top:12px;max-width:420px}
 #checkPaymentStatusButton{margin-top:12px}
+
+.payment-status{margin-top:12px;padding:11px;border:1px solid #5ce7dd35;border-radius:9px;color:#d8f7f4;background:#5ce7dd0b;font-size:11px;line-height:1.6;overflow-wrap:anywhere}.paypal-button-box{margin-top:12px;max-width:420px}#checkPaymentStatusButton{margin-top:12px}
