@@ -110,12 +110,17 @@ function publicAppUrl():string{
 
 app.get('/api/health',async(_req:Request,res:Response)=>{
   const ready=await databaseReady();
-  res.status(ready?200:503).json({
-    status:ready?'ready':'database_not_configured_or_unavailable',
+  res.status(200).json({
+    status:'online',
+    ready,
     database:ready?'connected':'unavailable',
     payments:paypalClientId&&paypalClientSecret?'paypal_configured':'paypal_credentials_missing',
     time:new Date().toISOString()
   });
+});
+app.get('/api/ready',async(_req:Request,res:Response)=>{
+  const ready=await databaseReady();
+  res.status(ready?200:503).json({status:ready?'ready':'database_unavailable',database:ready?'connected':'unavailable'});
 });
 app.get('/api/catalog',(_req:Request,res:Response)=>{
   res.json({objectives,packages,tiers:['Micro','Small','Medium','Large','Enterprise'],followerGoalMilestones,trackedMetricChoices,currency:'USD'});
@@ -282,6 +287,9 @@ app.post('/api/campaigns/:id/paypal/capture',async(req:Request,res:Response,next
       [campaign.id,parsed.data.orderId]
     );
     if(!paymentResult.rowCount){res.status(404).json({error:'PayPal order not found for this campaign.'});return;}
+    if(campaign.status!=='awaiting_payment'&&campaign.payment_status!=='paid'){
+      res.status(409).json({error:'This campaign is not currently approved for payment.'});return;
+    }
     const payment=paymentResult.rows[0] as {paypal_order_id:string;amount_usd:string;status:string};
     if(payment.status==='completed'){res.json({status:'COMPLETED',paymentStatus:'paid'});return;}
     const capture=await paypalRequest<{
