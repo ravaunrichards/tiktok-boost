@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS campaigns (
   start_mode VARCHAR(16) NOT NULL CHECK (start_mode IN ('immediate','scheduled')),
   scheduled_for TIMESTAMPTZ,
   pacing VARCHAR(16) NOT NULL CHECK (pacing IN ('accelerated','balanced','steady')),
+  requested_window_days INTEGER NOT NULL DEFAULT 7 CHECK (requested_window_days IN (1,2,3,5,7,14,30)),
   goal_milestone BIGINT,
   post_url TEXT,
   tracking_metrics TEXT[] NOT NULL DEFAULT '{}',

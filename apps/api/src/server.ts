@@ -32,6 +32,7 @@ const campaignSchema=z.object({
   startMode:z.enum(['immediate','scheduled']),
   scheduledFor:z.string().datetime({offset:true}).nullable().optional(),
   pacing:z.enum(['accelerated','balanced','steady']),
+  requestedWindowDays:z.number().int().refine((days)=>[1,2,3,5,7,14,30].includes(days)),
   goalMilestone:z.number().int().positive().nullable().optional(),
   postUrl:z.string().trim().url().max(500).nullable().optional(),
   trackingMetrics:z.array(z.string()).max(12).default([]),
@@ -73,8 +74,8 @@ app.post('/api/campaigns',async(req:Request,res:Response,next:NextFunction)=>{
     try{
       await client.query('BEGIN');
       const result=await client.query(
-        "INSERT INTO campaigns (email,tiktok_username,objective_id,package_id,package_name,tier_name,budget_usd,region,start_mode,scheduled_for,pacing,goal_milestone,post_url,tracking_metrics,notes,consent_at,status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,NOW(),'pending_review') RETURNING id,status,created_at",
-        [input.email,input.tiktokUsername.replace(/^@+/,''),input.objectiveId,selectedPackage.id,selectedPackage.objectiveName,selectedPackage.tierName,selectedPackage.budgetUsd,input.region,input.startMode,scheduledFor,input.pacing,input.goalMilestone??null,input.postUrl??null,input.trackingMetrics,input.notes]
+        "INSERT INTO campaigns (email,tiktok_username,objective_id,package_id,package_name,tier_name,budget_usd,region,start_mode,scheduled_for,pacing,requested_window_days,goal_milestone,post_url,tracking_metrics,notes,consent_at,status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,NOW(),'pending_review') RETURNING id,status,created_at",
+        [input.email,input.tiktokUsername.replace(/^@+/,''),input.objectiveId,selectedPackage.id,selectedPackage.objectiveName,selectedPackage.tierName,selectedPackage.budgetUsd,input.region,input.startMode,scheduledFor,input.pacing,input.requestedWindowDays,input.goalMilestone??null,input.postUrl??null,input.trackingMetrics,input.notes]
       );
       record=result.rows[0] as {id:string;status:string;created_at:Date};
       await client.query('INSERT INTO campaign_events (campaign_id,event_type,detail) VALUES ($1,$2,$3)',[record.id,'request_created','Campaign request received; awaiting manual review and advertiser/payment integration.']);

@@ -40,6 +40,7 @@ function updateSummary():void{
  byId('summaryBudget').textContent=currentPackage.displayPrice;byId('summaryTotal').textContent=currentPackage.displayPrice+' USD';
  byId('summaryStart').textContent=mode==='scheduled'?'Scheduled':'As soon as eligible';
  byId('summaryPacing').textContent=pacing.options[pacing.selectedIndex].text.split(' — ')[0];
+ byId('summaryWindow').textContent=byId<HTMLSelectElement>('requestedWindowDays').value+' days';
  byId('scheduledWrap').classList.toggle('hidden',mode!=='scheduled');
 }
 async function submitCampaign(event:SubmitEvent):Promise<void>{
@@ -53,7 +54,7 @@ async function submitCampaign(event:SubmitEvent):Promise<void>{
  const payload={
   tiktokUsername:byId<HTMLInputElement>('username').value.trim().replace(/^@+/,''),email:byId<HTMLInputElement>('email').value.trim(),
   objectiveId:currentObjective,packageId:currentPackage.id,region:byId<HTMLInputElement>('region').value.trim(),
-  startMode:mode,scheduledFor:date?date.toISOString():null,pacing:byId<HTMLSelectElement>('pacing').value,
+  startMode:mode,scheduledFor:date?date.toISOString():null,pacing:byId<HTMLSelectElement>('pacing').value,requestedWindowDays:Number(byId<HTMLSelectElement>('requestedWindowDays').value),
   goalMilestone:currentObjective==='follower-growth'&&milestone?Number(milestone):null,
   postUrl:byId<HTMLInputElement>('postUrl').value.trim()||null,trackingMetrics,
   notes:byId<HTMLTextAreaElement>('notes').value.trim(),consent:byId<HTMLInputElement>('consent').checked
@@ -71,4 +72,5 @@ async function submitCampaign(event:SubmitEvent):Promise<void>{
 byId<HTMLFormElement>('campaignForm').addEventListener('submit',(event)=>void submitCampaign(event));
 byId<HTMLSelectElement>('startMode').addEventListener('change',updateSummary);
 byId<HTMLSelectElement>('pacing').addEventListener('change',updateSummary);
+byId<HTMLSelectElement>('requestedWindowDays').addEventListener('change',updateSummary);
 loadCatalog().catch((error:unknown)=>{byId('objectiveGrid').textContent=error instanceof Error?error.message:'Campaign catalog unavailable.';byId('packageGrid').textContent='Please check the API service and reload.';});
