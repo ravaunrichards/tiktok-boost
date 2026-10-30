@@ -11,7 +11,7 @@
     "build": "pnpm --filter @tikboost/catalog build && pnpm --filter @tikboost/web build && pnpm --filter @tikboost/api build",
     "start": "pnpm --filter @tikboost/api start",
     "test": "pnpm --filter @tikboost/catalog test && pnpm --filter @tikboost/api test",
-    "typecheck": "pnpm --filter @tikboost/catalog typecheck && pnpm --filter @tikboost/api typecheck && pnpm --filter @tikboost/web typecheck",
+    "typecheck": "pnpm --filter @tikboost/catalog build && pnpm --filter @tikboost/catalog typecheck && pnpm --filter @tikboost/api typecheck && pnpm --filter @tikboost/web typecheck",
     "db:migrate": "pnpm --filter @tikboost/api db:migrate"
   },
   "devDependencies": {
