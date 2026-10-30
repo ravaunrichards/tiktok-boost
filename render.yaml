@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: tikboost-app
+    runtime: node
+    plan: starter
+    buildCommand: corepack enable && pnpm install && pnpm build
+    preDeployCommand: pnpm db:migrate
+    startCommand: pnpm --filter @tikboost/api start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: WEB_ORIGIN
+        value: https://tikboost-app.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tikboost-db
+          property: connectionString
+databases:
+  - name: tikboost-db
+    plan: basic-256mb
+    databaseName: tikboost
+    user: tikboost

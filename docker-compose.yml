@@ -1,0 +1,31 @@
+services:
+  app:
+    build: .
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      WEB_ORIGIN: http://localhost:4000
+      DATABASE_URL: postgres://tikboost:tikboost@db:5432/tikboost
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: tikboost
+      POSTGRES_PASSWORD: tikboost
+      POSTGRES_DB: tikboost
+    ports:
+      - "5432:5432"
+    volumes:
+      - tikboost_data:/var/lib/postgresql/data
+      - ./database/migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U tikboost -d tikboost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  tikboost_data:

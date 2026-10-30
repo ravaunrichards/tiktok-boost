@@ -1,0 +1,20 @@
+{
+  "name": "tikboost-platform",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.12.3",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @tikboost/catalog build && concurrently -k \"pnpm --filter @tikboost/api dev\" \"pnpm --filter @tikboost/web dev\"",
+    "build": "pnpm --filter @tikboost/catalog build && pnpm --filter @tikboost/web build && pnpm --filter @tikboost/api build",
+    "start": "pnpm --filter @tikboost/api start",
+    "test": "pnpm --filter @tikboost/catalog test && pnpm --filter @tikboost/api test",
+    "typecheck": "pnpm --filter @tikboost/catalog typecheck && pnpm --filter @tikboost/api typecheck && pnpm --filter @tikboost/web typecheck",
+    "db:migrate": "pnpm --filter @tikboost/api db:migrate"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

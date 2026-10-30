@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#101017">
+<meta name="description" content="Plan authentic TikTok promotion campaigns with transparent packages, delivery pacing and scheduled starts.">
+<title>TikBoost — Real Campaign Growth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+</head><body>
+<header class="topbar"><a class="brand" href="#"><span class="brand-mark">T</span>TikBoost</a><nav><a href="#objectives">Campaigns</a><a href="#packages">Packages</a><a href="#order">Start a campaign</a></nav><a class="nav-cta" href="#order">Build campaign ↗</a></header>
+<main>
+<section class="hero"><div class="hero-copy"><p class="eyebrow"><span class="pulse"></span> CAMPAIGN GROWTH, CLEARLY PLANNED</p><h1>Make your next<br><em>move count.</em></h1>
+<p class="hero-text">Choose your campaign goal, compare five package sizes, set how quickly your budget should pace, and choose when your campaign request starts.</p>
+<div class="hero-actions"><a class="button primary" href="#objectives">Explore packages ↘</a><span class="micro-note">No account password. No fake engagement.</span></div>
+<div class="hero-stats"><div><b>7</b><span>campaign goals</span></div><div><b>5</b><span>package sizes</span></div><div><b>1M</b><span>follower goal milestone</span></div></div></div>
+<div class="hero-panel"><div class="panel-head"><span>CAMPAIGN SNAPSHOT</span><span class="live-dot">● PLANNING</span></div><div class="snapshot-title">Your next campaign</div>
+<div class="snapshot-main"><div class="snapshot-icon">↗</div><div><b>Choose the outcome</b><span>Followers, focused views, reach, traffic</span></div></div>
+<div class="snapshot-line"><span>Package sizes</span><b>Micro → Enterprise</b></div><div class="snapshot-line"><span>Start preference</span><b>Now or scheduled</b></div><div class="snapshot-line"><span>Delivery pacing</span><b>Accelerated / Balanced / Steady</b></div>
+<div class="snapshot-foot">Results depend on creative, audience, approval and auction conditions.</div></div></section>
+<section class="section" id="objectives"><div class="section-heading"><div><p class="eyebrow">01 / PICK YOUR GOAL</p><h2>What are you growing?</h2><p class="section-sub">Each goal has its own package list and reporting focus.</p></div><span class="step-tag">7 OBJECTIVES</span></div><div class="objective-grid" id="objectiveGrid"><div class="loading">Loading campaign objectives…</div></div></section>
+<section class="section packages-section" id="packages"><div class="section-heading"><div><p class="eyebrow">02 / CHOOSE YOUR SIZE</p><h2 id="packageHeading">Follower-growth packages</h2><p class="section-sub" id="packageSub">Choose a budget tier that suits your campaign.</p></div><span class="step-tag">5 PACKAGE SIZES</span></div>
+<div class="package-grid" id="packageGrid"><div class="loading">Loading packages…</div></div><p class="budget-disclaimer">Displayed amounts are suggested starting media budgets in USD, not guaranteed engagement quantities or account-specific ad quotes. Final spend, fees, taxes and forecasts must be confirmed before payment.</p></section>
+<section class="section order-section" id="order"><div class="section-heading"><div><p class="eyebrow">03 / BUILD YOUR REQUEST</p><h2>Set your delivery preferences.</h2><p class="section-sub">Tell us where to promote, when to start, and how to pace the campaign.</p></div><span class="step-tag">CAMPAIGN REQUEST</span></div>
+<div class="order-layout"><form id="campaignForm" class="form-card">
+<div class="form-block"><h3><span>01</span>Your TikTok</h3><div class="form-grid">
+<label>TikTok username<input id="username" maxlength="24" placeholder="@yourusername" required></label><label>Email for updates<input id="email" type="email" placeholder="you@example.com" required></label>
+<label class="full">Public TikTok video URL <span class="optional">Optional for goals that use a post</span><input id="postUrl" type="url" placeholder="https://www.tiktok.com/@username/video/..."></label>
+<label class="full">Target country or region<input id="region" placeholder="e.g. Jamaica, United States, United Kingdom" required></label>
+</div></div>
+<div class="form-block"><h3><span>02</span>Your campaign goal</h3><div class="selected-package" id="selectedPackage"><b>Loading selected package…</b></div>
+<label id="milestoneWrap" class="milestone-wrap">Follower-growth planning milestone<select id="milestone"><option value="">Choose a goal milestone</option></select><small>Milestones from 100 to 1,000,000 are planning goals only; they are not guaranteed follower deliveries.</small></label>
+<fieldset class="metrics-field"><legend>Metrics to track</legend><div class="metric-options">
+<label><input type="checkbox" name="metrics" value="follows" checked> Follows</label><label><input type="checkbox" name="metrics" value="profile visits" checked> Profile visits</label><label><input type="checkbox" name="metrics" value="video views" checked> Video views</label><label><input type="checkbox" name="metrics" value="likes"> Likes</label><label><input type="checkbox" name="metrics" value="comments"> Comments</label><label><input type="checkbox" name="metrics" value="shares"> Shares</label><label><input type="checkbox" name="metrics" value="saves"> Saves</label><label><input type="checkbox" name="metrics" value="clicks"> Clicks</label>
+</div><small>Engagement metrics are monitored outcomes where reporting is available, not separately sold or guaranteed quantities.</small></fieldset></div>
+<div class="form-block"><h3><span>03</span>Start time & pacing</h3>
+<label>When should the campaign request start?<select id="startMode"><option value="immediate">Start as soon as reviewed and eligible</option><option value="scheduled">Schedule a start date and time</option></select></label>
+<label id="scheduledWrap" class="hidden">Preferred start date and time<input id="scheduledFor" type="datetime-local"><small>Scheduled start is a preference and remains subject to review, account eligibility and ad approval.</small></label>
+<label>Delivery pacing<select id="pacing"><option value="accelerated">Accelerated — prioritize faster budget pacing where inventory allows</option><option value="balanced" selected>Balanced — distribute spend across the campaign window</option><option value="steady">Steady — use a more gradual pacing preference</option></select></label>
+<label>Additional campaign notes<textarea id="notes" rows="3" maxlength="1000" placeholder="Audience interests, campaign context, creative notes…"></textarea></label></div>
+<label class="consent"><input id="consent" type="checkbox" required><span>I confirm I am authorized to promote this account and understand results are not guaranteed. I will not provide my TikTok password.</span></label>
+<div id="formError" class="form-error" role="alert"></div><button class="button primary submit-button" type="submit" id="submitButton">Create campaign request →</button><p class="form-footnote">This submits a request for review. No payment is collected and no campaign is marked live by this form.</p>
+</form>
+<aside class="summary-card"><div class="summary-top"><span>YOUR SELECTION</span><span class="summary-icon">✦</span></div><h3>Campaign summary</h3>
+<div class="summary-row"><span>Objective</span><b id="summaryObjective">Follower growth</b></div><div class="summary-row"><span>Package</span><b id="summaryPackage">Micro</b></div><div class="summary-row"><span>Media budget</span><b id="summaryBudget">$25</b></div><div class="summary-row"><span>Start preference</span><b id="summaryStart">As soon as eligible</b></div><div class="summary-row"><span>Pacing</span><b id="summaryPacing">Balanced</b></div><div class="summary-total"><span>Suggested budget</span><b id="summaryTotal">$25 USD</b></div>
+<div class="summary-warning"><b>Transparent delivery</b><p>Ad approval, available inventory, audience response and auction conditions affect actual delivery. We do not promise a fixed follower, like, share or view count.</p></div><div id="requestResult" class="request-result hidden" role="status"></div></aside></div></section>
+<section class="section metrics-section"><div class="section-heading"><div><p class="eyebrow">04 / ENGAGEMENT ANALYTICS</p><h2>See the whole picture.</h2><p class="section-sub">Separate campaign goals from the organic engagement they may generate.</p></div></div>
+<div class="metric-grid"><div><span>01</span><b>Followers</b><p>New follows attributed to eligible campaign reporting.</p></div><div><span>02</span><b>Views</b><p>Video plays and focused-view metrics where available.</p></div><div><span>03</span><b>Likes & comments</b><p>Observed reactions and conversation, not sold quantities.</p></div><div><span>04</span><b>Shares & saves</b><p>Content resonance signals where reporting exposes them.</p></div><div><span>05</span><b>Visits & clicks</b><p>Profile visits and destination traffic by objective.</p></div></div></section>
+</main>
+<footer><a class="brand" href="#"><span class="brand-mark">T</span>TikBoost</a><p>Independent campaign planning. Not affiliated with TikTok or ByteDance.</p><p class="footer-note">Authentic promotion only. No bots, fake accounts, engagement exchanges, or guaranteed engagement packages.</p></footer>
+<script type="module" src="/src/main.ts"></script>
+</body></html>
