@@ -1,27 +1,38 @@
 # Deployment
 
-## Render Blueprint
-1. Push the repository to GitHub.
-2. In Render, create a Blueprint and select this repository.
-3. Review the web service and PostgreSQL resources.
-4. Deploy and verify the health endpoint returns HTTP 200.
-5. Run the database migration with the root workspace migration command.
-6. Complete advertiser-account and payment integrations before accepting paid campaigns.
+## Render service
+TikBoost uses the repository Dockerfile so the deployment does not run `corepack enable` against Render's read-only system pnpm shim.
 
-## Docker
-Run docker compose up --build from the repository root. The app listens on port 4000 and PostgreSQL is exposed on port 5432 for local development.
+1. Connect `ravaunrichards/tiktok-boost` on branch `main`.
+2. Select Docker runtime and repository-root Dockerfile.
+3. Keep health check at `/api/health`; use `/api/ready` for database readiness monitoring.
+4. Add `DATABASE_URL`, `PGSSL=true` when required, and the PayPal secrets listed in `docs/paypal-setup.md`.
+5. On startup, the API applies any unapplied SQL migrations in `database/migrations`.
+6. Confirm `/api/health` returns HTTP 200 and `/api/ready` returns HTTP 200 before accepting requests.
 
-## Environment
-- DATABASE_URL: PostgreSQL connection string.
-- PORT: API port; defaults to 4000.
-- WEB_ORIGIN: allowed browser origin; set this to the production domain.
-- PGSSL: set true only when the managed database requires TLS.
+The existing Render service `tikboost-app` was initially configured with the Node build command `corepack enable && pnpm install && pnpm build`. That command failed because Corepack attempted to unlink `/usr/bin/pnpm` on Render's read-only filesystem. The Dockerfile and Render Blueprint have been corrected. The existing service's runtime/build configuration still needs to be switched to Docker in Render if it is not already linked to the Blueprint.
+
+## Database
+A PostgreSQL database is required for campaign intake and payments. Do not point TikBoost at another application's database. Use a dedicated Render PostgreSQL instance or a dedicated Supabase project. The account currently has no available additional Render Free Postgres slot; the paid Render Postgres create request returned a billing-card requirement. Until a dedicated `DATABASE_URL` is added, the app can boot in degraded mode but campaign intake, payments and readiness will remain unavailable.
+
+## Environment variables
+- `DATABASE_URL`: dedicated TikBoost PostgreSQL connection string.
+- `PGSSL`: `true` if the provider requires TLS.
+- `PORT`: Render supplies this; the container listens on it.
+- `WEB_ORIGIN`: allowed browser origin (the TikBoost site URL).
+- `PUBLIC_APP_URL`: public TikBoost site URL used for PayPal return/cancel URLs.
+- `PAYPAL_MODE`: `sandbox` for testing; `live` only after all tests pass.
+- `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`: PayPal REST app credentials.
+- `PAYPAL_WEBHOOK_ID`: webhook ID from the PayPal Developer Dashboard.
+- `ADMIN_API_KEY`: long random secret for protected staff review endpoints.
+
+Never commit secrets to GitHub. Store them only in Render environment variables.
 
 ## Production gates
-- Configure database backups, network restrictions, monitoring, and migrations.
-- Set a real domain and HTTPS.
-- Add authentication, authorization, and role-protected staff tooling before exposing campaign records.
-- Configure a verified TikTok Ads advertiser integration and confirm market, account, objective, creative, and API permission eligibility.
-- Configure a payment processor, verified webhooks, refunds, reconciliation, and tax handling.
-- Test checkout, schedule, provider approval, pause, cancellation, refunds, and reporting end to end.
-- Never mark a campaign paid, approved, in delivery, or completed based only on form submission.
+- Configure a dedicated database, backups, access restrictions, and TLS.
+- Configure PayPal Sandbox credentials and subscribe the webhook URL before testing.
+- Run sandbox create-order, buyer approval, capture, duplicate-webhook, refund and reconciliation tests.
+- Switch to PayPal Live only after the business account is verified and sandbox flows pass.
+- Configure eligible TikTok Ads advertiser access and complete creative, audience, account and market eligibility checks.
+- Add a protected staff console, customer authentication, support and privacy/retention workflows before broad launch.
+- Never mark an ad as live or completed solely because an invoice was paid.
