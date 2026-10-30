@@ -371,6 +371,21 @@ app.post('/api/paypal/webhook',async(req:Request,res:Response,next:NextFunction)
             payment.rows[0].campaign_id,'paypal_webhook_refunded','Verified PayPal refund webhook received.'
           ]);
         }
+      }else if(event.event_type==='PAYMENT.CAPTURE.DENIED'&&orderId){
+        const payment=await client.query('SELECT campaign_id FROM campaign_payments WHERE paypal_order_id=$1',[orderId]);
+        if(payment.rowCount){
+          await client.query(
+            "UPDATE campaign_payments SET status='failed',provider_payload=$1::jsonb WHERE paypal_order_id=$2 AND status<>'completed'",
+            [JSON.stringify(event),orderId]
+          );
+          await client.query(
+            "UPDATE campaigns SET payment_status='failed' WHERE id=$1 AND payment_status<>'paid'",
+            [payment.rows[0].campaign_id]
+          );
+          await client.query('INSERT INTO campaign_events(campaign_id,event_type,detail) VALUES($1,$2,$3)',[
+            payment.rows[0].campaign_id,'paypal_webhook_capture_denied','Verified PayPal capture-denied webhook received.'
+          ]);
+        }
       }
       await client.query('COMMIT');
       res.status(200).json({received:true});
